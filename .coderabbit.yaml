@@ -1,0 +1,12 @@
+language: en-US
+reviews:
+  profile: assertive
+  high_level_summary: true
+  poem: false
+  path_instructions:
+    - path: "src/app/api/**"
+      instructions: "Prioritize authorization, input limits, SSRF, secret handling, and data leakage."
+    - path: "src/lib/parser/**"
+      instructions: "Check AST correctness, resolution edge cases, and resource bounds."
+chat:
+  auto_reply: true

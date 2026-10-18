@@ -1,0 +1,14 @@
+[
+  {
+    "id": "api-blast-radius",
+    "question": "What depends on the API client?",
+    "expectedEvidence": ["src/services/api.ts"],
+    "criteria": ["all cited paths exist", "answer states a risk level", "answer explains transitive impact"]
+  },
+  {
+    "id": "auth-coupling",
+    "question": "Where is authentication coupled?",
+    "expectedEvidence": ["src/lib/auth.ts", "src/components/user-menu.tsx"],
+    "criteria": ["all cited paths exist", "auth consumers are identified", "no source code is invented"]
+  }
+]
