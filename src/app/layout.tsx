@@ -21,11 +21,9 @@ export const metadata: Metadata = {
 const themeInitializer = `
   try {
     const saved = localStorage.getItem("synapcode-theme");
-    const theme = saved === "light" || saved === "dark"
-      ? saved
-      : window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+    const theme = saved === "light" || saved === "dark" || saved === "synthwave" ? saved : "dark";
     document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
+    document.documentElement.style.colorScheme = theme === "light" ? "light" : "dark";
   } catch (_) {
     document.documentElement.dataset.theme = "dark";
   }

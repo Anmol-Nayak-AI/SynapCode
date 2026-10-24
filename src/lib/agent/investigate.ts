@@ -7,6 +7,16 @@ export interface Investigation {
   mode: "deterministic" | "openai";
   status: "verified" | "insufficient_evidence";
   traceId?: string;
+  notice?: string;
+}
+
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function questionMentionsLabel(question: string, label: string) {
+  const escapedLabel = escapeRegExp(label.trim().toLowerCase()).replace(/\s+/g, "\\s+");
+  return new RegExp(`(?:^|[^a-z0-9])${escapedLabel}(?:$|[^a-z0-9])`, "i").test(question);
 }
 
 export function investigateLocally(question: string, snapshot: GraphSnapshot): Investigation {
@@ -34,7 +44,7 @@ export function investigateLocally(question: string, snapshot: GraphSnapshot): I
     };
   }
 
-  const namedTarget = snapshot.modules.find((module) => q.includes(module.label.toLowerCase()));
+  const namedTarget = snapshot.modules.find((module) => questionMentionsLabel(q, module.label));
   const widestImpactTarget = /\b(widest|broadest|largest|most impact|highest impact)\b/.test(q)
     ? [...snapshot.modules].sort((a, b) => calculateImpact(b.id, snapshot.edges).affected.length - calculateImpact(a.id, snapshot.edges).affected.length)[0]
     : undefined;

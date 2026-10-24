@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { AuthStage } from "@/components/auth-stage";
 import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { isClerkConfigured } from "@/lib/auth/context";
@@ -13,5 +14,5 @@ export default async function StartPage() {
   const { userId, orgId } = await auth();
   if (!userId) redirect("/sign-in");
   if (orgId) redirect("/dashboard");
-  return <main className="relative grid min-h-screen place-items-center bg-background p-6"><div className="absolute right-6 top-6"><ThemeToggle /></div><div className="flex flex-col items-center gap-8"><Logo /><ActivateOrganization /></div></main>;
+  return <main className="spatial-shell relative grid min-h-screen place-items-center p-6"><div className="absolute right-6 top-6 z-10"><ThemeToggle /></div><AuthStage><Logo /><ActivateOrganization /></AuthStage></main>;
 }

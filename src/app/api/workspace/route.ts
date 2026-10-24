@@ -12,7 +12,7 @@ export async function GET() {
     const organizationId = await findOrganizationId(context.organizationId, context.userId);
     return NextResponse.json(await getWorkspaceData(organizationId));
   } catch (error) {
-    console.error("Workspace retrieval failed", error);
-    return NextResponse.json({ error: error instanceof Error ? error.message : "Workspace retrieval failed." }, { status: 500 });
+    console.error("Console retrieval failed", error);
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Console retrieval failed." }, { status: 500 });
   }
 }

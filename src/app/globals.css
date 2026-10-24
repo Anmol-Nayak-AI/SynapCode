@@ -1,51 +1,128 @@
 @import "tailwindcss";
 
+html { scroll-behavior: smooth; }
+
 :root {
-  --background: #181514;
-  --foreground: #f4ede5;
-  --surface: #221e1b;
-  --surface-deep: #1c1917;
-  --surface-strong: #2d2723;
-  --overlay: #100e0d;
-  --node: #2b2521;
-  --control: #302925;
-  --ink: #fffaf3;
-  --paper: #100e0d;
-  --tone-50: #fffaf3;
-  --tone-100: #f6eee5;
-  --tone-200: #eadfd4;
-  --tone-300: #d6c6b9;
-  --tone-400: #b9a79a;
-  --tone-500: #968478;
-  --tone-600: #75665d;
-  --tone-700: #574b44;
-  --tone-800: #3d3530;
-  --tone-900: #2a2522;
+  --background: #030711;
+  --foreground: #eefcff;
+  --surface: #08101d;
+  --surface-deep: #050a14;
+  --surface-strong: #0c1726;
+  --overlay: #01040a;
+  --node: #0b1828;
+  --control: #0e1d2d;
+  --ink: #f4feff;
+  --paper: #01040a;
+  --tone-50: #f4feff;
+  --tone-100: #dcf7fb;
+  --tone-200: #b8dce3;
+  --tone-300: #8eb8c2;
+  --tone-400: #6d929d;
+  --tone-500: #506f7b;
+  --tone-600: #3a535f;
+  --tone-700: #273c49;
+  --tone-800: #152838;
+  --tone-900: #0b1725;
+  --grid-line: rgb(0 242 254 / 5.5%);
+  --accent-300: #91fbff;
+  --accent-400: #00f2fe;
+  --accent-500: #19c7f3;
+  --accent-600: #0896c0;
+  --accent-700: #066d91;
+  --accent-contrast: #02070d;
+  --secondary-300: #91c8ff;
+  --secondary-400: #4facfe;
+  --fresh-300: #b1ff91;
+  --fresh-400: #72ff8d;
+  --notice-surface: rgb(0 242 254 / 8%);
+  --notice-border: rgb(145 251 255 / 22%);
+  --notice-text: #91fbff;
+  --success-surface: rgb(52 211 153 / 8%);
+  --success-border: rgb(110 231 183 / 18%);
+  --success-text: #6ee7b7;
   color-scheme: dark;
 }
 
 :root[data-theme="light"] {
-  --background: #f7f1e8;
-  --foreground: #2b211c;
-  --surface: #fffaf3;
-  --surface-deep: #efe5d8;
-  --surface-strong: #e6d7c6;
-  --overlay: #201a17;
-  --node: #fff8ef;
-  --control: #eadfd2;
-  --ink: #2b211c;
-  --paper: #fffaf3;
-  --tone-50: #2b211c;
-  --tone-100: #3b2e27;
-  --tone-200: #4b3b32;
-  --tone-300: #5f4c41;
-  --tone-400: #6f5c50;
-  --tone-500: #7f6b5f;
-  --tone-600: #927f73;
-  --tone-700: #a89588;
-  --tone-800: #c8b8aa;
-  --tone-900: #e2d6ca;
+  --background: #edf7f8;
+  --foreground: #071822;
+  --surface: #f8feff;
+  --surface-deep: #e3f0f3;
+  --surface-strong: #d5e7eb;
+  --overlay: #041017;
+  --node: #f5fdff;
+  --control: #dcebee;
+  --ink: #071822;
+  --paper: #f8feff;
+  --tone-50: #071822;
+  --tone-100: #102a36;
+  --tone-200: #1b3e4b;
+  --tone-300: #2e5663;
+  --tone-400: #466f7a;
+  --tone-500: #638991;
+  --tone-600: #7da1a8;
+  --tone-700: #9bb9bf;
+  --tone-800: #bdd2d6;
+  --tone-900: #dbe8ea;
+  --grid-line: rgb(4 104 130 / 4.5%);
+  --accent-300: #08748a;
+  --accent-400: #006f86;
+  --accent-500: #005c73;
+  --accent-600: #06495e;
+  --accent-700: #07394b;
+  --accent-contrast: #f4feff;
+  --secondary-300: #246ba6;
+  --secondary-400: #125b97;
+  --fresh-300: #087b50;
+  --fresh-400: #086f49;
+  --notice-surface: #dff3f5;
+  --notice-border: #4d9baa;
+  --notice-text: #07576a;
+  --success-surface: #dff7ea;
+  --success-border: #53a67d;
+  --success-text: #075f3e;
   color-scheme: light;
+}
+
+:root[data-theme="synthwave"] {
+  --background: #090806;
+  --foreground: #fff6d9;
+  --surface: #15120c;
+  --surface-deep: #0d0b07;
+  --surface-strong: #211b10;
+  --overlay: #050402;
+  --node: #1c170d;
+  --control: #28200f;
+  --ink: #fff8e3;
+  --paper: #050402;
+  --tone-50: #fff8e3;
+  --tone-100: #f8edc9;
+  --tone-200: #dfd0a8;
+  --tone-300: #bda976;
+  --tone-400: #98834f;
+  --tone-500: #756335;
+  --tone-600: #584a28;
+  --tone-700: #41361d;
+  --tone-800: #2a2314;
+  --tone-900: #19150d;
+  --grid-line: rgb(255 190 72 / 6%);
+  --accent-300: #ffd987;
+  --accent-400: #ffbe48;
+  --accent-500: #e99b20;
+  --accent-600: #b87512;
+  --accent-700: #87530a;
+  --accent-contrast: #090806;
+  --secondary-300: #ffe7a5;
+  --secondary-400: #f5cf72;
+  --fresh-300: #d9ff84;
+  --fresh-400: #a7e94f;
+  --notice-surface: rgb(255 190 72 / 11%);
+  --notice-border: rgb(255 217 135 / 24%);
+  --notice-text: #ffd987;
+  --success-surface: rgb(167 233 79 / 9%);
+  --success-border: rgb(217 255 132 / 19%);
+  --success-text: #d9ff84;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -69,27 +146,32 @@
   --color-slate-700: var(--tone-700);
   --color-slate-800: var(--tone-800);
   --color-slate-900: var(--tone-900);
-  --color-violet-300: #ffb19d;
-  --color-violet-400: #ff8a6e;
-  --color-violet-500: #f46f52;
-  --color-violet-600: #d9573d;
-  --color-indigo-600: #bd432e;
-  --color-sky-100: #ffe3d8;
-  --color-sky-300: #ffb19d;
-  --color-sky-400: #ff8a6e;
-  --color-cyan-300: #95e3c4;
-  --color-cyan-400: #5ec9a4;
-  --color-emerald-300: #95e3c4;
-  --color-emerald-400: #5ec9a4;
+  --color-violet-300: var(--accent-300);
+  --color-violet-400: var(--accent-400);
+  --color-violet-500: var(--accent-500);
+  --color-violet-600: var(--accent-600);
+  --color-indigo-600: var(--accent-700);
+  --color-sky-100: var(--secondary-300);
+  --color-sky-300: var(--secondary-300);
+  --color-sky-400: var(--secondary-400);
+  --color-cyan-300: var(--secondary-300);
+  --color-cyan-400: var(--secondary-400);
+  --color-emerald-300: var(--fresh-300);
+  --color-emerald-400: var(--fresh-400);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
   background:
-    radial-gradient(circle at 12% -8%, rgb(244 111 82 / 13%), transparent 32rem),
-    radial-gradient(circle at 100% 0%, rgb(94 201 164 / 9%), transparent 30rem),
+    radial-gradient(circle at 12% -8%, color-mix(in srgb, var(--accent-400) 14%, transparent), transparent 36rem),
+    radial-gradient(circle at 92% 6%, color-mix(in srgb, var(--secondary-400) 11%, transparent), transparent 34rem),
+    radial-gradient(circle at 50% 105%, color-mix(in srgb, var(--fresh-400) 6%, transparent), transparent 42rem),
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px),
     var(--background);
+  background-size: auto, auto, auto, 64px 64px, 64px 64px, auto;
+  background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   margin: 0;
@@ -104,15 +186,180 @@ body {
 
 button, input, textarea { font: inherit; }
 button { cursor: pointer; }
-::selection { background: rgb(244 111 82 / 35%); color: var(--ink); }
+::selection { background: color-mix(in srgb, var(--accent-500) 35%, transparent); color: var(--ink); }
 .react-flow__node { font-family: var(--font-geist-sans); }
-.react-flow__edge-path { filter: drop-shadow(0 0 3px rgba(82, 97, 125, .16)); }
 
-.theme-icon-sun { display: block; }
-.theme-icon-moon { display: none; }
-:root[data-theme="light"] .theme-icon-sun { display: none; }
-:root[data-theme="light"] .theme-icon-moon { display: block; }
+.synapcode-flow {
+  background:
+    radial-gradient(circle at 28% 20%, color-mix(in srgb, var(--accent-400) 6%, transparent), transparent 38rem),
+    radial-gradient(circle at 82% 78%, color-mix(in srgb, var(--fresh-400) 3%, transparent), transparent 32rem),
+    var(--surface-deep) !important;
+}
+
+.synapcode-flow .react-flow__edge-path {
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--secondary-400) 22%, transparent));
+  transition: stroke 180ms ease, filter 180ms ease;
+}
+
+.synapcode-flow .react-flow__controls {
+  border-color: color-mix(in srgb, var(--accent-400) 16%, transparent) !important;
+  background: color-mix(in srgb, var(--control) 94%, transparent) !important;
+}
+
+.synapcode-flow .react-flow__controls-button {
+  color: var(--tone-300) !important;
+  fill: currentColor !important;
+  background: var(--control) !important;
+  border-color: color-mix(in srgb, var(--accent-400) 10%, transparent) !important;
+}
+
+.synapcode-flow .react-flow__controls-button:hover {
+  color: var(--accent-300) !important;
+  background: var(--surface-strong) !important;
+}
+
+.module-node-card {
+  box-shadow: 0 12px 38px color-mix(in srgb, var(--overlay) 34%, transparent);
+}
+
+.module-node-selected {
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--accent-400) 10%, transparent),
+    0 0 36px color-mix(in srgb, var(--accent-400) 12%, transparent);
+}
+
+.module-node-handle-target {
+  border-color: var(--secondary-400) !important;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--secondary-400) 78%, transparent) !important;
+}
+
+.module-node-handle-source {
+  border-color: var(--fresh-400) !important;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--fresh-400) 78%, transparent) !important;
+}
+
+.snapshot-notice-demo {
+  color: var(--notice-text);
+  background: var(--notice-surface);
+  border-color: var(--notice-border);
+}
+
+.snapshot-notice-success {
+  color: var(--success-text);
+  background: var(--success-surface);
+  border-color: var(--success-border);
+}
+
+/* Clerk renders its development notice in a card footer outside the form.
+   Keep the provider UI functional while our own portal owns the footer copy. */
+.synapcode-auth .cl-footer,
+.synapcode-auth .cl-footerAction,
+.synapcode-auth .cl-footerPages {
+  display: none !important;
+}
+
+.spatial-shell {
+  position: relative;
+  isolation: isolate;
+}
+
+.spatial-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, transparent 0%, color-mix(in srgb, var(--accent-400) 2%, transparent) 50%, transparent 100%),
+    repeating-linear-gradient(to bottom, transparent 0 3px, rgb(255 255 255 / 1.4%) 4px);
+  opacity: .55;
+}
+
+.holo-panel {
+  position: relative;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--surface) 90%, transparent), color-mix(in srgb, var(--surface-deep) 82%, transparent));
+  border: 1px solid color-mix(in srgb, var(--accent-400) 13%, transparent);
+  box-shadow: inset 0 1px rgb(255 255 255 / 4%), 0 28px 90px rgb(0 0 0 / 24%);
+  backdrop-filter: blur(22px);
+}
+
+.holo-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(115deg, color-mix(in srgb, var(--accent-400) 8%, transparent), transparent 28%, transparent 70%, color-mix(in srgb, var(--secondary-400) 7%, transparent));
+  opacity: .8;
+}
+
+:root[data-theme="light"] .holo-panel {
+  background: linear-gradient(145deg, rgb(255 255 255 / 94%), rgb(231 243 246 / 90%));
+  border-color: rgb(6 111 134 / 16%);
+  box-shadow: inset 0 1px rgb(255 255 255 / 90%), 0 24px 70px rgb(25 67 78 / 12%);
+}
+
+:root[data-theme="light"] .holo-panel::after {
+  background: linear-gradient(115deg, rgb(0 111 134 / 4%), transparent 30%, transparent 72%, rgb(18 91 151 / 4%));
+  opacity: .42;
+}
+
+:root[data-theme="light"] .scan-beam::before {
+  opacity: .22;
+}
+
+.hud-corners {
+  --hud-color: color-mix(in srgb, var(--accent-400) 72%, transparent);
+  background-image:
+    linear-gradient(var(--hud-color), var(--hud-color)), linear-gradient(var(--hud-color), var(--hud-color)),
+    linear-gradient(var(--hud-color), var(--hud-color)), linear-gradient(var(--hud-color), var(--hud-color));
+  background-repeat: no-repeat;
+  background-position: left top, left top, right bottom, right bottom;
+  background-size: 22px 1px, 1px 22px, 22px 1px, 1px 22px;
+}
+
+.scan-beam {
+  position: relative;
+  overflow: hidden;
+}
+
+.scan-beam::before {
+  content: "";
+  position: absolute;
+  z-index: 20;
+  inset: -30% 0 auto;
+  height: 28%;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--accent-400) 10%, transparent), transparent);
+  animation: scan-beam 7s linear infinite;
+}
+
+@keyframes scan-beam {
+  from { transform: translateY(-20%); }
+  to { transform: translateY(520%); }
+}
+
+@keyframes data-flow {
+  to { background-position: 180% 0; }
+}
+
+.data-flow {
+  background-image: linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--accent-400) 65%, transparent) 45%, transparent 70%);
+  background-size: 220% 100%;
+  animation: data-flow 3.8s linear infinite;
+}
+
+.theme-icon-sun, .theme-icon-moon, .theme-icon-synthwave { display: none; }
+.theme-icon-moon { display: block; }
+:root[data-theme="light"] .theme-icon-moon { display: none; }
+:root[data-theme="light"] .theme-icon-sun { display: block; }
+:root[data-theme="synthwave"] .theme-icon-moon { display: none; }
+:root[data-theme="synthwave"] .theme-icon-synthwave { display: block; }
 
 @media (max-width: 640px) {
   .react-flow__minimap { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }

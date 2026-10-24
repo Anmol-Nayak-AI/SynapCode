@@ -31,9 +31,10 @@ describe("Dashboard navigation", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /AI investigator/ }));
     expect(screen.getByRole("heading", { name: "AI investigator" })).toBeTruthy();
+    expect(screen.queryByText("Beta")).toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: /Members/ }));
-    expect(screen.getByRole("heading", { name: "Workspace members" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Console members" })).toBeTruthy();
 
     fireEvent.click(screen.getByRole("button", { name: "Settings" }));
     expect(screen.getByRole("heading", { name: "Settings" })).toBeTruthy();
@@ -71,6 +72,7 @@ describe("Dashboard navigation", () => {
         answer: "Auth has two verified downstream consumers.",
         evidence: ["src/lib/auth.ts"],
         mode: "deterministic",
+        status: "verified",
       }),
     });
     vi.stubGlobal("fetch", fetchMock);
@@ -82,6 +84,49 @@ describe("Dashboard navigation", () => {
     expect(screen.getByDisplayValue("What is the change impact of src/lib/auth.ts?")).toBeTruthy();
     await waitFor(() => expect(fetchMock).toHaveBeenCalledWith("/api/agent", expect.objectContaining({ method: "POST" })));
     await waitFor(() => expect(screen.getByText("Auth has two verified downstream consumers.")).toBeTruthy());
+  });
+
+  it("shows a retry action for investigator request failures", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
+      ok: false,
+      status: 503,
+      json: async () => ({ error: "The investigator is temporarily unavailable." }),
+    }));
+    render(<Dashboard />);
+
+    fireEvent.click(screen.getByRole("button", { name: /AI investigator/ }));
+    fireEvent.click(screen.getByRole("button", { name: "What is the change impact of src/services/api.ts?" }));
+
+    expect(await screen.findByText("The investigator is temporarily unavailable.")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Retry investigation" })).toBeTruthy();
+    expect(screen.queryByText("Insufficient evidence")).toBeNull();
+  });
+
+  it("keeps the newest answer when an older investigation resolves later", async () => {
+    let resolveFirst: ((value: unknown) => void) | undefined;
+    const fetchMock = vi.fn()
+      .mockImplementationOnce(() => new Promise((resolve) => { resolveFirst = resolve; }))
+      .mockResolvedValueOnce({ ok: true, status: 200, json: async () => ({ answer: "Newest answer", evidence: [], mode: "deterministic", status: "verified" }) });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<Dashboard />);
+
+    fireEvent.click(screen.getByRole("button", { name: /AI investigator/ }));
+    fireEvent.click(screen.getByRole("button", { name: /API Client src\/services\/api\.ts/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Auth src\/lib\/auth\.ts/ }));
+    expect(await screen.findByText("Newest answer")).toBeTruthy();
+
+    resolveFirst?.({ ok: true, status: 200, json: async () => ({ answer: "Stale answer", evidence: [], mode: "deterministic", status: "verified" }) });
+    await Promise.resolve();
+    expect(screen.queryByText("Stale answer")).toBeNull();
+  });
+
+  it("uses the theme-aware informational treatment for the demo snapshot", () => {
+    render(<Dashboard />);
+
+    fireEvent.click(screen.getByRole("button", { name: /AI investigator/ }));
+    const notice = screen.getByText("DEMO SNAPSHOT · not your repository").closest("p");
+
+    expect(notice?.className).toContain("snapshot-notice-demo");
   });
 
   it("analyzes a repository and persists the dynamic workspace locally", async () => {

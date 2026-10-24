@@ -24,6 +24,18 @@ describe("repository investigator", () => {
     expect(result.evidence).toEqual([]);
   });
 
+  it("does not match short module labels inside ordinary words", () => {
+    const result = investigateLocally("What happens if this application is released?", demoSnapshot);
+    expect(result.status).toBe("insufficient_evidence");
+    expect(result.evidence).toEqual([]);
+  });
+
+  it("matches a multi-word module label at word boundaries", () => {
+    const result = investigateLocally("What depends on the API Client?", demoSnapshot);
+    expect(result.status).toBe("verified");
+    expect(result.evidence[0]).toBe("src/services/api.ts");
+  });
+
   it("answers cycle questions directly from snapshot evidence", () => {
     const result = investigateLocally("Are there circular dependencies?", demoSnapshot);
     expect(result.status).toBe("verified");

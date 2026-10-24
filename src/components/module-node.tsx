@@ -11,8 +11,8 @@ export function ModuleNode({ data, selected }: NodeProps) {
   const codeModule = data as unknown as CodeModule;
   const Icon = icons[codeModule.kind];
   return (
-    <div className={cn("group w-[188px] rounded-xl border bg-panel-strong/95 px-3.5 py-3 shadow-[0_12px_32px_rgba(0,0,0,.24)] backdrop-blur transition", selected ? "border-violet-400 shadow-[0_0_0_3px_rgba(244,111,82,.14),0_16px_40px_rgba(0,0,0,.3)]" : "border-white/[.09] hover:border-white/20")}>
-      <Handle type="target" position={Position.Left} className="!h-2 !w-2 !border-2 !border-[#7887a8] !bg-node" />
+    <div className={cn("module-node-card group w-[188px] rounded-xl border bg-panel-strong/95 px-3.5 py-3 backdrop-blur-xl transition", selected ? "module-node-selected border-violet-400" : "border-violet-400/[.14] hover:border-violet-400/35")}>
+      <Handle type="target" position={Position.Left} className="module-node-handle module-node-handle-target !h-2 !w-2 !border-2 !bg-node" />
       <div className="flex items-start gap-2.5">
         <span className={cn("mt-0.5 grid size-7 shrink-0 place-items-center rounded-lg", codeModule.kind === "service" ? "bg-cyan-400/10 text-cyan-300" : codeModule.kind === "config" ? "bg-amber-400/10 text-amber-300" : "bg-violet-400/10 text-violet-300")}>
           <Icon size={14} strokeWidth={1.8} />
@@ -26,7 +26,7 @@ export function ModuleNode({ data, selected }: NodeProps) {
         <span><b className="font-medium text-slate-300">{codeModule.imports}</b> imports</span>
         <span><b className="font-medium text-slate-300">{codeModule.importedBy}</b> used by</span>
       </div>
-      <Handle type="source" position={Position.Right} className="!h-2 !w-2 !border-2 !border-[#7887a8] !bg-node" />
+      <Handle type="source" position={Position.Right} className="module-node-handle module-node-handle-source !h-2 !w-2 !border-2 !bg-node" />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import { zodTextFormat } from "openai/helpers/zod";
 import { z } from "zod";
 import { traceable } from "langsmith/traceable";
 import { getCurrentRunTree } from "langsmith/traceable";
@@ -21,6 +22,12 @@ const schema = z.object({
   }),
 });
 
+const investigationOutputSchema = z.object({
+  answer: z.string().trim().min(1),
+  evidence: z.array(z.string()).max(20),
+  status: z.enum(["verified", "insufficient_evidence"]),
+});
+
 const investigateWithOpenAI = traceable(async ({ question, snapshot }: { question: string; snapshot: GraphSnapshot }) => {
   const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const compactGraph = {
@@ -29,13 +36,16 @@ const investigateWithOpenAI = traceable(async ({ question, snapshot }: { questio
     cycles: snapshot.cycles,
     truncated: snapshot.truncated ?? false,
   };
-  const response = await client.responses.create({
+  const response = await client.responses.parse({
     model: process.env.OPENAI_MODEL ?? "gpt-5-mini",
     instructions: "You are SynapCode's repository investigator. Answer only from the supplied dependency graph; you do not have file contents. Cite exact file paths as evidence. Never substitute another module when a requested path is absent. If evidence is insufficient, say so and return an empty evidence array. Return concise JSON with keys answer (string), evidence (string array), and status (verified or insufficient_evidence).",
     input: `Question: ${question}\nVerified graph: ${JSON.stringify(compactGraph)}`,
-    text: { format: { type: "json_schema", name: "investigation", strict: true, schema: { type: "object", additionalProperties: false, properties: { answer: { type: "string" }, evidence: { type: "array", items: { type: "string" } }, status: { type: "string", enum: ["verified", "insufficient_evidence"] } }, required: ["answer", "evidence", "status"] } } },
+    text: { format: zodTextFormat(investigationOutputSchema, "investigation") },
   });
-  const parsed = JSON.parse(response.output_text) as { answer: string; evidence: string[]; status: "verified" | "insufficient_evidence" };
+  const parsed = response.output_parsed;
+  if (response.status !== "completed" || !parsed) {
+    throw new Error(`OpenAI investigation did not complete (status: ${response.status}).`);
+  }
   const validation = validateEvidence(snapshot, parsed.evidence);
   if (!validation.valid) throw new Error(`Investigation cited invalid evidence: ${validation.invalid.join(", ")}`);
   let traceId = response.id;
@@ -65,19 +75,39 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Sign in and select an organization first." }, { status: 401 });
     }
     const billing = await getBillingAccess();
-    const result = process.env.OPENAI_API_KEY && billing.aiInvestigator
-      ? await investigateWithOpenAI({ question, snapshot: typedSnapshot })
-      : investigateLocally(question, typedSnapshot);
+    let result;
+    if (process.env.OPENAI_API_KEY && billing.aiInvestigator) {
+      try {
+        result = await investigateWithOpenAI({ question, snapshot: typedSnapshot });
+      } catch (error) {
+        console.error("OpenAI investigation failed; using verified graph fallback", error);
+        result = {
+          ...investigateLocally(question, typedSnapshot),
+          notice: "The AI explanation was unavailable, so this answer was calculated directly from the verified graph.",
+        };
+      }
+    } else {
+      result = {
+        ...investigateLocally(question, typedSnapshot),
+        notice: process.env.OPENAI_API_KEY
+          ? "AI explanations are not enabled for this workspace, so this answer was calculated directly from the verified graph."
+          : "OpenAI is not configured, so this answer was calculated directly from the verified graph.",
+      };
+    }
     if (context?.mode === "authenticated" && snapshot.snapshotId && isSupabaseConfigured()) {
-      const organizationId = await findOrganizationId(context.organizationId, context.userId);
-      await persistAgentRun({
-        organizationId,
-        snapshotId: snapshot.snapshotId,
-        userId: context.userId,
-        question,
-        answer: { answer: result.answer, evidence: result.evidence, mode: result.mode, status: result.status },
-        traceId: result.traceId,
-      });
+      try {
+        const organizationId = await findOrganizationId(context.organizationId, context.userId);
+        await persistAgentRun({
+          organizationId,
+          snapshotId: snapshot.snapshotId,
+          userId: context.userId,
+          question,
+          answer: { answer: result.answer, evidence: result.evidence, mode: result.mode, status: result.status },
+          traceId: result.traceId,
+        });
+      } catch (error) {
+        console.error("Investigation succeeded but history persistence failed", error);
+      }
     }
     return NextResponse.json(result);
   } catch (error) {

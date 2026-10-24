@@ -14,12 +14,17 @@ describe("ThemeToggle", () => {
 
   it("switches themes and persists the preference", () => {
     render(<ThemeToggle />);
-    const toggle = screen.getByRole("button", { name: /toggle light and dark mode/i });
+    const toggle = screen.getByRole("button", { name: /switch theme/i });
 
     fireEvent.click(toggle);
     expect(document.documentElement.dataset.theme).toBe("light");
     expect(document.documentElement.style.colorScheme).toBe("light");
     expect(localStorage.getItem("synapcode-theme")).toBe("light");
+
+    fireEvent.click(toggle);
+    expect(document.documentElement.dataset.theme).toBe("synthwave");
+    expect(document.documentElement.style.colorScheme).toBe("dark");
+    expect(localStorage.getItem("synapcode-theme")).toBe("synthwave");
 
     fireEvent.click(toggle);
     expect(document.documentElement.dataset.theme).toBe("dark");
