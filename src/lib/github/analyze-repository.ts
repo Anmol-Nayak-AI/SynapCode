@@ -30,8 +30,9 @@ export async function fetchGitHubSources(repository: string, commitSha: string) 
   const tree = await github<{ tree: GitHubTreeItem[]; truncated: boolean }>(
     `/repos/${encodedRepository(repository)}/git/trees/${commitSha}?recursive=1`,
   );
-  const candidates = tree.tree
-    .filter((item) => item.type === "blob" && /\.[jt]sx?$/.test(item.path) && !/(^|\/)(node_modules|dist|build|\.next|coverage|vendor)\//.test(item.path))
+  const sourceItems = tree.tree
+    .filter((item) => item.type === "blob" && /\.[jt]sx?$/.test(item.path) && !/(^|\/)(node_modules|dist|build|\.next|coverage|vendor)\//.test(item.path));
+  const candidates = sourceItems
     .filter((item) => (item.size ?? 0) <= 150_000)
     .slice(0, 250);
   if (!candidates.length) throw new Error("No analyzable JavaScript or TypeScript files were found.");
@@ -45,7 +46,7 @@ export async function fetchGitHubSources(repository: string, commitSha: string) 
       if (blob.encoding === "base64") files.push({ path: item.path, content: Buffer.from(blob.content, "base64").toString("utf8") });
     });
   }
-  return { files, truncated: tree.truncated || candidates.length === 250 };
+  return { files, truncated: tree.truncated || files.length < sourceItems.length };
 }
 
 export async function analyzeGitHubRepository(repository: string, ref: string) {

@@ -4,6 +4,15 @@ SynapCode is an agentic code-intelligence platform that turns TypeScript and Jav
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black) ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue) ![Tests](https://img.shields.io/badge/tests-Vitest-6e9f18)
 
+## Recruiter quick tour
+
+- **Explore the product:** [SynapCode](https://synapcode.vercel.app)
+- **Review the core engineering:** [AST parser](src/lib/parser/analyze-files.ts), [graph analysis](src/lib/graph/analysis.ts), and [evidence-grounded investigator](src/lib/agent/investigate.ts)
+- **Review production design:** [rollout guide](docs/production-rollout.md), [database migrations](supabase/migrations), and [CI checks](.github/workflows/ci.yml)
+- **Try it locally:** use Node.js 22.12+ and run `npm ci && npm run dev`. No credentials are needed for the local demo.
+
+This is a public portfolio repository. Visitors can read and clone the code; direct changes to this repository require explicit write access. No external write access is offered.
+
 ## What works now
 
 - Interactive React Flow architecture graph with Dagre layout, minimap, zoom, and module inspection
