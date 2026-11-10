@@ -11,7 +11,7 @@
     "test:watch": "vitest",
     "eval:agent": "vitest run src/lib/agent/investigate.test.ts",
     "dev:inngest": "npx inngest-cli@latest dev -u http://localhost:3000/api/inngest",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "next typegen && tsc --noEmit",
     "check": "npm run typecheck && npm run test && npm run lint"
   },
   "dependencies": {
